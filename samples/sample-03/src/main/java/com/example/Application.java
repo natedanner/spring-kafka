@@ -49,7 +49,7 @@ import com.common.Foo2;
 @SpringBootApplication
 public class Application {
 
-	final static CountDownLatch LATCH = new CountDownLatch(1);
+	static final CountDownLatch LATCH = new CountDownLatch(1);
 
 	public static void main(String[] args) throws InterruptedException {
 		ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);

@@ -1084,7 +1084,7 @@ public class KafkaMessageListenerContainer<K, V> // NOSONAR line count
 					autoOffsetReset = str;
 				}
 			}
-			boolean resetLatest = autoOffsetReset == null || autoOffsetReset.equals("latest");
+			boolean resetLatest = autoOffsetReset == null || "latest".equals(autoOffsetReset);
 			boolean latestOnlyOption = AssignmentCommitOption.LATEST_ONLY.equals(this.autoCommitOption)
 					|| AssignmentCommitOption.LATEST_ONLY_NO_TX.equals(this.autoCommitOption);
 			return !this.autoCommit && resetLatest && latestOnlyOption;
@@ -1559,9 +1559,8 @@ public class KafkaMessageListenerContainer<K, V> // NOSONAR line count
 							commitOffsets(toFix);
 						}
 						else {
-							this.transactionTemplate.executeWithoutResult(status -> {
-								doSendOffsets(getTxProducer(), toFix);
-							});
+							this.transactionTemplate.executeWithoutResult(status ->
+								doSendOffsets(getTxProducer(), toFix));
 						}
 					}
 				}
@@ -3253,9 +3252,8 @@ public class KafkaMessageListenerContainer<K, V> // NOSONAR line count
 
 		private Map<TopicPartition, OffsetAndMetadata> buildCommits() {
 			Map<TopicPartition, OffsetAndMetadata> commits = new LinkedHashMap<>();
-			this.offsets.forEach((topicPartition, offset) -> {
-				commits.put(topicPartition, createOffsetAndMetadata(offset + 1));
-			});
+			this.offsets.forEach((topicPartition, offset) ->
+				commits.put(topicPartition, createOffsetAndMetadata(offset + 1)));
 			this.offsets.clear();
 			return commits;
 		}
@@ -3664,7 +3662,7 @@ public class KafkaMessageListenerContainer<K, V> // NOSONAR line count
 						&& ListenerConsumer.this.kafkaTxManager != null
 						&& !AssignmentCommitOption.LATEST_ONLY_NO_TX.equals(ListenerConsumer.this.autoCommitOption)) {
 
-					offsetsToCommit.forEach((partition, offsetAndMetadata) -> {
+					offsetsToCommit.forEach((partition, offsetAndMetadata) ->
 						ListenerConsumer.this.transactionTemplate
 								.execute(new TransactionCallbackWithoutResult() {
 
@@ -3680,8 +3678,7 @@ public class KafkaMessageListenerContainer<K, V> // NOSONAR line count
 										}
 									}
 
-								});
-					});
+								}));
 				}
 				else {
 					ContainerProperties containerProps = KafkaMessageListenerContainer.this.getContainerProperties();

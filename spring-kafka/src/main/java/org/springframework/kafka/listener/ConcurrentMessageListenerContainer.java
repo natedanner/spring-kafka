@@ -281,7 +281,7 @@ public class ConcurrentMessageListenerContainer<K, V> extends AbstractMessageLis
 		}));
 		AsyncTaskExecutor exec = container.getContainerProperties().getListenerTaskExecutor();
 		if (exec == null) {
-			if ((this.executors.size() > index)) {
+			if (this.executors.size() > index) {
 				exec = this.executors.get(index);
 			}
 			else {

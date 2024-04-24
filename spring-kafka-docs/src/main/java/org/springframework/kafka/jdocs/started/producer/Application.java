@@ -50,9 +50,8 @@ public class Application {
 
     @Bean
     public ApplicationRunner runner(KafkaTemplate<String, String> template) {
-        return args -> {
+        return args ->
             template.send("topic1", "test");
-        };
     }
 
 }

@@ -53,7 +53,7 @@ public class BatchListenerWithRecordAdapterTests {
 					.getListenerContainer("batchRecordAdapter").getContainerProperties().getMessageListener();
 		List<ConsumerRecord<String, String>> records = new ArrayList<>();
 		records.add(new ConsumerRecord<String, String>("foo", 0, 0, null, "foo"));
-		ConsumerRecord<String, String> barRecord = new ConsumerRecord<String, String>("foo", 0, 1, null, "bar");
+		ConsumerRecord<String, String> barRecord = new ConsumerRecord<>("foo", 0, 1, null, "bar");
 		records.add(barRecord);
 		records.add(new ConsumerRecord<String, String>("foo", 0, 2, null, "baz"));
 		adapter.onMessage(records, null, null);
@@ -72,7 +72,7 @@ public class BatchListenerWithRecordAdapterTests {
 					.getListenerContainer("batchRecordAdapterFullRecord").getContainerProperties().getMessageListener();
 		List<ConsumerRecord<String, String>> records = new ArrayList<>();
 		records.add(new ConsumerRecord<String, String>("foo", 0, 0, null, "foo"));
-		ConsumerRecord<String, String> barRecord = new ConsumerRecord<String, String>("foo", 0, 1, null, "bar");
+		ConsumerRecord<String, String> barRecord = new ConsumerRecord<>("foo", 0, 1, null, "bar");
 		records.add(barRecord);
 		records.add(new ConsumerRecord<String, String>("foo", 0, 2, null, "baz"));
 		adapter.onMessage(records, null, null);

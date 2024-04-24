@@ -105,11 +105,10 @@ public class DefaultKafkaProducerFactoryTests {
 		Queue queue = (Queue) cache.get("foo");
 		assertThat(queue).hasSize(1);
 		assertThatExceptionOfType(CannotCreateTransactionException.class)
-				.isThrownBy(() -> {
+				.isThrownBy(() ->
 					transactionTemplate.execute(s -> {
 						return null;
-					});
-				})
+					}))
 				.withStackTraceContaining("Invalid transition");
 
 		assertThat(queue).hasSize(0);
@@ -202,11 +201,10 @@ public class DefaultKafkaProducerFactoryTests {
 		assertThat(suffixQueue).hasSize(2);
 
 		assertThatExceptionOfType(KafkaException.class)
-				.isThrownBy(() -> {
+				.isThrownBy(() ->
 					transactionTemplate.execute(s -> {
 						throw new RuntimeException("rollback exception");
-					});
-				})
+					}))
 				.withStackTraceContaining("Invalid abort transition");
 		assertThat(queue).hasSize(0);
 		assertThat(suffixQueue).hasSize(2);
@@ -573,7 +571,7 @@ public class DefaultKafkaProducerFactoryTests {
 		Map<MetricName, ? extends Metric> metrics = new HashMap<>();
 		metrics.put(new MetricName("test", "group", "desc", Collections.singletonMap("client-id", "foo-0")), null);
 		given(producer.metrics()).willReturn(metrics);
-		DefaultKafkaProducerFactory pf = new DefaultKafkaProducerFactory(Collections.EMPTY_MAP) {
+		DefaultKafkaProducerFactory pf = new DefaultKafkaProducerFactory(Collections.emptyMap()) {
 
 			@Override
 			protected Producer createRawProducer(Map configs) {

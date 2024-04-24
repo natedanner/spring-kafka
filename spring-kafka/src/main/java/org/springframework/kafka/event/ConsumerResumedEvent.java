@@ -31,7 +31,7 @@ public class ConsumerResumedEvent extends KafkaEvent {
 
 	private static final long serialVersionUID = 1L;
 
-	private transient Collection<TopicPartition> partitions;
+	private final transient Collection<TopicPartition> partitions;
 
 	/**
 	 * Construct an instance with the provided source and partitions.

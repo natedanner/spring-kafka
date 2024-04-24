@@ -143,10 +143,9 @@ class KafkaStreamsInteractiveQueryServiceTests {
 		kafkaStreamsField.set(interactiveQueryService, kafkaStreams);
 
 		assertThatExceptionOfType(IllegalStateException.class)
-				.isThrownBy(() -> {
+				.isThrownBy(() ->
 					this.interactiveQueryService
-					.retrieveQueryableStore(NON_EXISTENT_STORE, QueryableStoreTypes.keyValueStore());
-				})
+					.retrieveQueryableStore(NON_EXISTENT_STORE, QueryableStoreTypes.keyValueStore()))
 				.withMessageContaining("Error retrieving state store: my-non-existent-store");
 
 		verify(kafkaStreams, times(3)).store(any(StoreQueryParameters.class));
@@ -190,10 +189,9 @@ class KafkaStreamsInteractiveQueryServiceTests {
 		IntegerSerializer serializer = new IntegerSerializer();
 
 		assertThatExceptionOfType(IllegalStateException.class)
-				.isThrownBy(() -> {
+				.isThrownBy(() ->
 					this.interactiveQueryService.getKafkaStreamsApplicationHostInfo(NON_EXISTENT_STORE, 12345,
-							serializer);
-				})
+							serializer))
 				.withMessageContaining("Error when retrieving state store.");
 
 		verify(kafkaStreams, times(3)).queryMetadataForKey(NON_EXISTENT_STORE, 12345,

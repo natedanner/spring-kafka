@@ -165,11 +165,10 @@ public class ReactiveKafkaProducerTemplateIntegrationTests {
 				this.reactiveKafkaProducerTemplate.send(REACTIVE_INT_KEY_TOPIC, DEFAULT_VALUE);
 
 		StepVerifier.create(senderResultMono)
-				.assertNext(senderResult -> {
+				.assertNext(senderResult ->
 					assertThat(senderResult.recordMetadata())
 							.extracting(RecordMetadata::topic)
-							.isEqualTo(REACTIVE_INT_KEY_TOPIC);
-				})
+							.isEqualTo(REACTIVE_INT_KEY_TOPIC))
 				.expectComplete()
 				.verify(DEFAULT_VERIFY_TIMEOUT);
 
@@ -185,11 +184,10 @@ public class ReactiveKafkaProducerTemplateIntegrationTests {
 				this.reactiveKafkaProducerTemplate.send(REACTIVE_INT_KEY_TOPIC, DEFAULT_KEY, DEFAULT_VALUE);
 
 		StepVerifier.create(resultMono)
-				.assertNext(senderResult -> {
+				.assertNext(senderResult ->
 					assertThat(senderResult.recordMetadata())
 							.extracting(RecordMetadata::topic)
-							.isEqualTo(REACTIVE_INT_KEY_TOPIC);
-				})
+							.isEqualTo(REACTIVE_INT_KEY_TOPIC))
 				.expectComplete()
 				.verify(DEFAULT_VERIFY_TIMEOUT);
 		StepVerifier.create(reactiveKafkaConsumerTemplate.receive().doOnNext(rr -> rr.receiverOffset().acknowledge()))
@@ -207,11 +205,10 @@ public class ReactiveKafkaProducerTemplateIntegrationTests {
 				.send(REACTIVE_INT_KEY_TOPIC, DEFAULT_PARTITION, DEFAULT_KEY, DEFAULT_VALUE);
 
 		StepVerifier.create(resultMono)
-				.assertNext(senderResult -> {
+				.assertNext(senderResult ->
 					assertThat(senderResult.recordMetadata())
 							.extracting(RecordMetadata::topic, RecordMetadata::partition)
-							.containsExactly(REACTIVE_INT_KEY_TOPIC, DEFAULT_PARTITION);
-				})
+							.containsExactly(REACTIVE_INT_KEY_TOPIC, DEFAULT_PARTITION))
 				.expectComplete()
 				.verify(DEFAULT_VERIFY_TIMEOUT);
 
@@ -231,11 +228,10 @@ public class ReactiveKafkaProducerTemplateIntegrationTests {
 				.send(REACTIVE_INT_KEY_TOPIC, DEFAULT_PARTITION, DEFAULT_TIMESTAMP, DEFAULT_KEY, DEFAULT_VALUE);
 
 		StepVerifier.create(resultMono)
-				.assertNext(senderResult -> {
+				.assertNext(senderResult ->
 					assertThat(senderResult.recordMetadata())
 							.extracting(RecordMetadata::topic, RecordMetadata::partition, RecordMetadata::timestamp)
-							.containsExactly(REACTIVE_INT_KEY_TOPIC, DEFAULT_PARTITION, DEFAULT_TIMESTAMP);
-				})
+							.containsExactly(REACTIVE_INT_KEY_TOPIC, DEFAULT_PARTITION, DEFAULT_TIMESTAMP))
 				.expectComplete()
 				.verify(DEFAULT_VERIFY_TIMEOUT);
 
@@ -264,11 +260,10 @@ public class ReactiveKafkaProducerTemplateIntegrationTests {
 		Mono<SenderResult<Void>> resultMono = reactiveKafkaProducerTemplate.send(producerRecord);
 
 		StepVerifier.create(resultMono)
-				.assertNext(senderResult -> {
+				.assertNext(senderResult ->
 					assertThat(senderResult.recordMetadata())
 							.extracting(RecordMetadata::topic, RecordMetadata::partition, RecordMetadata::timestamp)
-							.containsExactly(REACTIVE_INT_KEY_TOPIC, DEFAULT_PARTITION, DEFAULT_TIMESTAMP);
-				})
+							.containsExactly(REACTIVE_INT_KEY_TOPIC, DEFAULT_PARTITION, DEFAULT_TIMESTAMP))
 				.expectComplete()
 				.verify(DEFAULT_VERIFY_TIMEOUT);
 
@@ -332,11 +327,10 @@ public class ReactiveKafkaProducerTemplateIntegrationTests {
 		Mono<SenderResult<Void>> resultMono = reactiveKafkaProducerTemplate.send(REACTIVE_INT_KEY_TOPIC, message);
 
 		StepVerifier.create(resultMono)
-				.assertNext(senderResult -> {
+				.assertNext(senderResult ->
 					assertThat(senderResult.recordMetadata())
 							.extracting(RecordMetadata::topic)
-							.isEqualTo(REACTIVE_INT_KEY_TOPIC);
-				})
+							.isEqualTo(REACTIVE_INT_KEY_TOPIC))
 				.expectComplete()
 				.verify(DEFAULT_VERIFY_TIMEOUT);
 

@@ -29,7 +29,7 @@ public abstract class KafkaEvent extends ApplicationEvent {
 
 	private static final long serialVersionUID = 1L;
 
-	private transient Object container;
+	private final transient Object container;
 
 	public KafkaEvent(Object source, Object container) {
 		super(source);

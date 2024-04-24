@@ -65,9 +65,8 @@ public class FallbackBatchErrorHandlerTests {
 	void recover() {
 		this.invoked = 0;
 		List<ConsumerRecord<?, ?>> recovered = new ArrayList<>();
-		FallbackBatchErrorHandler eh = new FallbackBatchErrorHandler(new FixedBackOff(0L, 3L), (cr, ex) ->  {
-			recovered.add(cr);
-		});
+		FallbackBatchErrorHandler eh = new FallbackBatchErrorHandler(new FixedBackOff(0L, 3L), (cr, ex) ->
+			recovered.add(cr));
 		Map<TopicPartition, List<ConsumerRecord<Object, Object>>> map = new HashMap<>();
 		map.put(new TopicPartition("foo", 0),
 				Collections.singletonList(new ConsumerRecord<>("foo", 0, 0L, "foo", "bar")));
@@ -94,9 +93,8 @@ public class FallbackBatchErrorHandlerTests {
 	void successOnRetry() {
 		this.invoked = 0;
 		List<ConsumerRecord<?, ?>> recovered = new ArrayList<>();
-		FallbackBatchErrorHandler eh = new FallbackBatchErrorHandler(new FixedBackOff(0L, 3L), (cr, ex) ->  {
-			recovered.add(cr);
-		});
+		FallbackBatchErrorHandler eh = new FallbackBatchErrorHandler(new FixedBackOff(0L, 3L), (cr, ex) ->
+			recovered.add(cr));
 		Map<TopicPartition, List<ConsumerRecord<Object, Object>>> map = new HashMap<>();
 		map.put(new TopicPartition("foo", 0),
 				Collections.singletonList(new ConsumerRecord<>("foo", 0, 0L, "foo", "bar")));
@@ -152,9 +150,8 @@ public class FallbackBatchErrorHandlerTests {
 	void exitOnContainerStop() {
 		this.invoked = 0;
 		List<ConsumerRecord<?, ?>> recovered = new ArrayList<>();
-		FallbackBatchErrorHandler eh = new FallbackBatchErrorHandler(new FixedBackOff(0, 99999), (cr, ex) ->  {
-			recovered.add(cr);
-		});
+		FallbackBatchErrorHandler eh = new FallbackBatchErrorHandler(new FixedBackOff(0, 99999), (cr, ex) ->
+			recovered.add(cr));
 		Map<TopicPartition, List<ConsumerRecord<Object, Object>>> map = new HashMap<>();
 		map.put(new TopicPartition("foo", 0),
 				Collections.singletonList(new ConsumerRecord<>("foo", 0, 0L, "foo", "bar")));
@@ -179,9 +176,8 @@ public class FallbackBatchErrorHandlerTests {
 	void rePauseOnRebalance() {
 		this.invoked = 0;
 		List<ConsumerRecord<?, ?>> recovered = new ArrayList<>();
-		FallbackBatchErrorHandler eh = new FallbackBatchErrorHandler(new FixedBackOff(0L, 1L), (cr, ex) ->  {
-			recovered.add(cr);
-		});
+		FallbackBatchErrorHandler eh = new FallbackBatchErrorHandler(new FixedBackOff(0L, 1L), (cr, ex) ->
+			recovered.add(cr));
 		Map<TopicPartition, List<ConsumerRecord<Object, Object>>> map = new HashMap<>();
 		map.put(new TopicPartition("foo", 0),
 				Collections.singletonList(new ConsumerRecord<>("foo", 0, 0L, "foo", "bar")));
@@ -248,9 +244,8 @@ public class FallbackBatchErrorHandlerTests {
 	@Test
 	void reclassifyOnExceptionChange() {
 		AtomicReference<Exception> thrown = new AtomicReference<>();
-		DefaultErrorHandler eh = new DefaultErrorHandler((cr, ex) ->  {
-			thrown.set(ex);
-		}, new FixedBackOff(0L, Long.MAX_VALUE));
+		DefaultErrorHandler eh = new DefaultErrorHandler((cr, ex) ->
+			thrown.set(ex), new FixedBackOff(0L, Long.MAX_VALUE));
 		eh.addNotRetryableExceptions(IllegalArgumentException.class);
 		ConsumerRecords records = new ConsumerRecords(
 				Map.of(new TopicPartition("foo", 0), List.of(new ConsumerRecord("foo", 0, 0L, null, "bar"))));
@@ -269,9 +264,8 @@ public class FallbackBatchErrorHandlerTests {
 	@Test
 	void reclassifyUseSameBackOffOnExceptionChange() {
 		AtomicReference<Exception> thrown = new AtomicReference<>();
-		DefaultErrorHandler eh = new DefaultErrorHandler((cr, ex) ->  {
-			thrown.set(ex);
-		}, new FixedBackOff(0L, 3));
+		DefaultErrorHandler eh = new DefaultErrorHandler((cr, ex) ->
+			thrown.set(ex), new FixedBackOff(0L, 3));
 		ConsumerRecords records = new ConsumerRecords(
 				Map.of(new TopicPartition("foo", 0), List.of(new ConsumerRecord("foo", 0, 0L, null, "bar"))));
 		MessageListenerContainer container = mock(MessageListenerContainer.class);

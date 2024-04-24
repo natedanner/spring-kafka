@@ -145,10 +145,9 @@ public final class SeekUtils {
 			LogAccessor logger) {
 
 		Map<TopicPartition, Long> partitions = new LinkedHashMap<>();
-		records.forEach(record -> {
+		records.forEach(record ->
 			partitions.computeIfAbsent(new TopicPartition(record.topic(), record.partition()),
-					offset -> record.offset());
-		});
+					offset -> record.offset()));
 		seekPartitions(consumer, partitions, logger);
 	}
 

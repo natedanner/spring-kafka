@@ -413,12 +413,11 @@ public class EmbeddedKafkaZKBroker implements EmbeddedKafkaBroker {
 	 * @param topicsToCreate the topics.
 	 */
 	private void createKafkaTopics(Set<String> topicsToCreate) {
-		doWithAdmin(admin -> {
+		doWithAdmin(admin ->
 			createTopics(admin,
 					topicsToCreate.stream()
 						.map(t -> new NewTopic(t, this.partitionsPerTopic, (short) this.count))
-						.collect(Collectors.toList()));
-		});
+						.collect(Collectors.toList())));
 	}
 
 	private void createTopics(AdminClient admin, List<NewTopic> newTopics) {
@@ -475,12 +474,10 @@ public class EmbeddedKafkaZKBroker implements EmbeddedKafkaBroker {
 	 * @since 2.5.4
 	 */
 	private Map<String, Exception> createKafkaTopicsWithResults(Set<String> topicsToCreate) {
-		return doWithAdminFunction(admin -> {
-			return createTopicsWithResults(admin,
+		return doWithAdminFunction(admin -> createTopicsWithResults(admin,
 					topicsToCreate.stream()
 						.map(t -> new NewTopic(t, this.partitionsPerTopic, (short) this.count))
-						.collect(Collectors.toList()));
-		});
+						.collect(Collectors.toList())));
 	}
 
 	private Map<String, Exception> createTopicsWithResults(AdminClient admin, List<NewTopic> newTopics) {
@@ -611,7 +608,7 @@ public class EmbeddedKafkaZKBroker implements EmbeddedKafkaBroker {
 	}
 
 	public BrokerAddress[] getBrokerAddresses() {
-		List<BrokerAddress> addresses = new ArrayList<BrokerAddress>();
+		List<BrokerAddress> addresses = new ArrayList<>();
 		for (int kafkaPort : this.kafkaPorts) {
 			addresses.add(new BrokerAddress(LOOPBACK, kafkaPort));
 		}
@@ -733,7 +730,7 @@ public class EmbeddedKafkaZKBroker implements EmbeddedKafkaBroker {
 		List<String> notEmbedded = Arrays.stream(topicsToConsume)
 				.filter(topic -> !this.topics.contains(topic))
 				.collect(Collectors.toList());
-		if (notEmbedded.size() > 0) {
+		if (!notEmbedded.isEmpty()) {
 			throw new IllegalStateException("topic(s):'" + notEmbedded + "' are not in embedded topic list");
 		}
 		final AtomicReference<Collection<TopicPartition>> assigned = new AtomicReference<>();

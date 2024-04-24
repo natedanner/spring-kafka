@@ -48,9 +48,8 @@ public class FailedRecordTrackerTests {
 	@Test
 	void testNoRetries() {
 		AtomicBoolean recovered = new AtomicBoolean();
-		FailedRecordTracker tracker = new FailedRecordTracker((r, e) -> {
-			recovered.set(true);
-		}, new FixedBackOff(0L, 0L), mock(LogAccessor.class));
+		FailedRecordTracker tracker = new FailedRecordTracker((r, e) ->
+			recovered.set(true), new FixedBackOff(0L, 0L), mock(LogAccessor.class));
 		ConsumerRecord<?, ?> record = new ConsumerRecord<>("foo", 0, 0L, "bar", "baz");
 		assertThat(tracker.skip(record, new RuntimeException())).isTrue();
 		assertThat(recovered.get()).isTrue();
@@ -59,9 +58,8 @@ public class FailedRecordTrackerTests {
 	@Test
 	void testThreeRetries() {
 		AtomicBoolean recovered = new AtomicBoolean();
-		FailedRecordTracker tracker = new FailedRecordTracker((r, e) -> {
-			recovered.set(true);
-		}, new FixedBackOff(0L, 3L), mock(LogAccessor.class));
+		FailedRecordTracker tracker = new FailedRecordTracker((r, e) ->
+			recovered.set(true), new FixedBackOff(0L, 3L), mock(LogAccessor.class));
 		ConsumerRecord<?, ?> record = new ConsumerRecord<>("foo", 0, 0L, "bar", "baz");
 		assertThat(tracker.skip(record, new RuntimeException())).isFalse();
 		assertThat(tracker.skip(record, new RuntimeException())).isFalse();
@@ -88,9 +86,8 @@ public class FailedRecordTrackerTests {
 	@Test
 	void testDifferentOrder() {
 		List<ConsumerRecord<?, ?>> records = new ArrayList<>();
-		FailedRecordTracker tracker = new FailedRecordTracker((rec, ex) -> {
-			records.add(rec);
-		}, new FixedBackOff(0L, 2L), mock(LogAccessor.class));
+		FailedRecordTracker tracker = new FailedRecordTracker((rec, ex) ->
+			records.add(rec), new FixedBackOff(0L, 2L), mock(LogAccessor.class));
 		ConsumerRecord<?, ?> record1 = new ConsumerRecord<>("foo", 0, 0L, "bar", "baz");
 		ConsumerRecord<?, ?> record2 = new ConsumerRecord<>("foo", 1, 0L, "bar", "baz");
 		assertThat(tracker.skip(record1, new RuntimeException())).isFalse();
@@ -112,7 +109,7 @@ public class FailedRecordTrackerTests {
 		given(bo2.start()).willReturn(be2);
 		FailedRecordTracker tracker = new FailedRecordTracker((rec, ex) -> { }, bo1, mock(LogAccessor.class));
 		tracker.setBackOffFunction((record, ex) -> {
-			if (record.topic().equals("foo")) {
+			if ("foo".equals(record.topic())) {
 				return bo2;
 			}
 			else {

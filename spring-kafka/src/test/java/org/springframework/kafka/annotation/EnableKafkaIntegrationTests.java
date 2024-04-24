@@ -1603,7 +1603,7 @@ public class EnableKafkaIntegrationTests {
 		@Bean
 		public KafkaTemplate<Integer, String> partitionZeroReplyTemplate() {
 			// reply always uses the no-partition, no-key method; subclasses can be used
-			return new KafkaTemplate<Integer, String>(producerFactory(), true) {
+			return new KafkaTemplate<>(producerFactory(), true) {
 
 				@Override
 				public CompletableFuture<SendResult<Integer, String>> send(String topic, String data) {
@@ -1616,7 +1616,7 @@ public class EnableKafkaIntegrationTests {
 		@Bean
 		public KafkaTemplate<Integer, Object> partitionZeroReplyJsonTemplate() {
 			// reply always uses the no-partition, no-key method; subclasses can be used
-			return new KafkaTemplate<Integer, Object>(jsonProducerFactory(), true) {
+			return new KafkaTemplate<>(jsonProducerFactory(), true) {
 
 				@Override
 				public CompletableFuture<SendResult<Integer, Object>> send(String topic, Object data) {
@@ -1774,9 +1774,7 @@ public class EnableKafkaIntegrationTests {
 
 		@Bean
 		public KafkaListenerErrorHandler voidSendToErrorHandler() {
-			return (m, e) -> {
-				return "baz";
-			};
+			return (m, e) -> "baz";
 		}
 
 		private Throwable listen16Exception;
@@ -2848,10 +2846,7 @@ public class EnableKafkaIntegrationTests {
 				return false;
 			}
 			Foo other = (Foo) obj;
-			if (!this.bar.equals(other.bar)) {
-				return false;
-			}
-			return true;
+			return !!this.bar.equals(other.bar);
 		}
 
 	}

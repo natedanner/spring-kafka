@@ -87,7 +87,7 @@ public final class ResourcelessTransactionManager extends AbstractPlatformTransa
 
 	private static final class ResourcelessTransaction {
 
-		private boolean active = false;
+		private boolean active;
 
 		public boolean isActive() {
 			return active;

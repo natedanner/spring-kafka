@@ -610,12 +610,10 @@ public class TransactionalContainerTests {
 		Map<String, Object> senderProps = KafkaTestUtils.producerProps(embeddedKafka);
 		DefaultKafkaProducerFactory<Integer, String> pf = new DefaultKafkaProducerFactory<>(senderProps);
 		pf.setTransactionIdPrefix("fl.");
-		switch (whichTm) {
-		case 0:
-			break;
-		case 1:
+		if (whichTm == 0) {
+		}
+		else if (whichTm == 1) {
 			containerProps.setKafkaAwareTransactionManager(new KafkaTransactionManager<>(pf));
-			break;
 		}
 
 		final KafkaTemplate<Integer, String> template = new KafkaTemplate<>(pf);
@@ -1056,9 +1054,8 @@ public class TransactionalContainerTests {
 		def.setName("myTx");
 		props.setTransactionDefinition(def);
 		AtomicInteger deliveryCount = new AtomicInteger();
-		props.setMessageListener((MessageListener) m -> {
-			deliveryCount.incrementAndGet();
-		});
+		props.setMessageListener((MessageListener) m ->
+			deliveryCount.incrementAndGet());
 		KafkaMessageListenerContainer container = new KafkaMessageListenerContainer<>(cf, props);
 		AfterRollbackProcessor arp = mock(AfterRollbackProcessor.class);
 		given(arp.isProcessInTransaction()).willReturn(true);

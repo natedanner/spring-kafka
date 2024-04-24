@@ -528,9 +528,8 @@ public class KafkaMessageListenerContainerTests {
 		props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 1);
 		DefaultKafkaConsumerFactory<Integer, String> cf = new DefaultKafkaConsumerFactory<>(props);
 		ContainerProperties containerProps = new ContainerProperties(topic6);
-		containerProps.setMessageListener((MessageListener<Integer, String>) message -> {
-			logger.info("record ack: " + message);
-		});
+		containerProps.setMessageListener((MessageListener<Integer, String>) message ->
+			logger.info("record ack: " + message));
 		containerProps.setSyncCommits(true);
 		containerProps.setAckMode(AckMode.RECORD);
 		containerProps.setIdleBetweenPolls(1000L);
@@ -764,12 +763,8 @@ public class KafkaMessageListenerContainerTests {
 			pausedParts.set(Collections.emptySet());
 			return null;
 		}).given(consumer).resume(any());
-		willAnswer(inv -> {
-			return pausedParts.get();
-		}).given(consumer).paused();
-		willAnswer(inv -> {
-			return Collections.singleton(new TopicPartition("foo", 0));
-		}).given(consumer).assignment();
+		willAnswer(inv -> pausedParts.get()).given(consumer).paused();
+		willAnswer(inv -> Collections.singleton(new TopicPartition("foo", 0))).given(consumer).assignment();
 		AtomicInteger polled = new AtomicInteger();
 		given(consumer.poll(any(Duration.class))).willAnswer(i -> {
 			Thread.sleep(50);
@@ -814,7 +809,7 @@ public class KafkaMessageListenerContainerTests {
 				latch1.countDown();
 				latch2.countDown();
 				acks.add(ack);
-				if (latch1.getCount() == 0 && records1.values().size() > 0
+				if (latch1.getCount() == 0 && !records1.values().isEmpty()
 						&& records1.values().iterator().next().size() == 4) {
 					acks.get(3).acknowledge();
 					acks.get(2).acknowledge();
@@ -1150,9 +1145,8 @@ public class KafkaMessageListenerContainerTests {
 		Map<String, Object> props = KafkaTestUtils.consumerProps("test6", "false", embeddedKafka);
 		DefaultKafkaConsumerFactory<Integer, String> cf = new DefaultKafkaConsumerFactory<>(props);
 		ContainerProperties containerProps = new ContainerProperties(topic7);
-		containerProps.setMessageListener((MessageListener<Integer, String>) message -> {
-			logger.info("batch ack: " + message);
-		});
+		containerProps.setMessageListener((MessageListener<Integer, String>) message ->
+			logger.info("batch ack: " + message));
 		containerProps.setSyncCommits(true);
 		containerProps.setAckMode(AckMode.BATCH);
 		containerProps.setPollTimeout(100);
@@ -1217,9 +1211,8 @@ public class KafkaMessageListenerContainerTests {
 		Map<String, Object> props = KafkaTestUtils.consumerProps("test8", "false", embeddedKafka);
 		DefaultKafkaConsumerFactory<Integer, String> cf = new DefaultKafkaConsumerFactory<>(props);
 		ContainerProperties containerProps = new ContainerProperties(topic8);
-		containerProps.setMessageListener((BatchMessageListener<Integer, String>) messages -> {
-			logger.info("batch listener: " + messages);
-		});
+		containerProps.setMessageListener((BatchMessageListener<Integer, String>) messages ->
+			logger.info("batch listener: " + messages));
 		containerProps.setSyncCommits(true);
 		containerProps.setAckMode(AckMode.BATCH);
 		containerProps.setPollTimeout(100);
@@ -1678,7 +1671,7 @@ public class KafkaMessageListenerContainerTests {
 
 		CountDownLatch initialConsumersLatch = new CountDownLatch(2);
 
-		DefaultKafkaConsumerFactory<Integer, String> cf = new DefaultKafkaConsumerFactory<Integer, String>(props) {
+		DefaultKafkaConsumerFactory<Integer, String> cf = new DefaultKafkaConsumerFactory<>(props) {
 
 			@Override
 			protected KafkaConsumer<Integer, String> createKafkaConsumer(Map<String, Object> configs) {
@@ -1796,7 +1789,7 @@ public class KafkaMessageListenerContainerTests {
 
 		CountDownLatch stubbingComplete3 = new CountDownLatch(1);
 		KafkaMessageListenerContainer<Integer, String> resettingContainer = spyOnContainer(
-				new KafkaMessageListenerContainer<Integer, String>(cf, container3Props), stubbingComplete3);
+				new KafkaMessageListenerContainer<>(cf, container3Props), stubbingComplete3);
 		stubSetRunning(listenerConsumerAvailableLatch, listenerConsumerStartLatch, resettingContainer);
 		resettingContainer.setBeanName("b3");
 
@@ -3113,9 +3106,8 @@ public class KafkaMessageListenerContainerTests {
 		containerProps.setClientId("clientId");
 		containerProps.setMissingTopicsFatal(false);
 		AtomicInteger recordCount = new AtomicInteger();
-		containerProps.setMessageListener((MessageListener) r -> {
-			recordCount.incrementAndGet();
-		});
+		containerProps.setMessageListener((MessageListener) r ->
+			recordCount.incrementAndGet());
 		Properties consumerProps = new Properties();
 		consumerProps.setProperty(ConsumerConfig.DEFAULT_API_TIMEOUT_MS_CONFIG, "42000"); // wins
 		containerProps.setKafkaConsumerProperties(consumerProps);

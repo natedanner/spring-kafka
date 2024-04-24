@@ -245,9 +245,7 @@ public class DefaultErrorHandlerRecordTests {
 		MessageListenerContainer container = mock(MessageListenerContainer.class);
 		CountDownLatch latch = new CountDownLatch(1);
 		AtomicBoolean paused = new AtomicBoolean();
-		willAnswer(inv -> {
-			return paused.get();
-		}).given(container).isPauseRequested();
+		willAnswer(inv -> paused.get()).given(container).isPauseRequested();
 		willAnswer(inv -> {
 			paused.set(true);
 			return null;

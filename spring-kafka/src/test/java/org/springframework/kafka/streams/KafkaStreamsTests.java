@@ -213,9 +213,8 @@ public class KafkaStreamsTests {
 
 		@Bean
 		public StreamsBuilderFactoryBeanConfigurer customizer() {
-			return fb -> fb.setStateListener((newState, oldState) -> {
-				stateChangeCalled().set(true);
-			});
+			return fb -> fb.setStateListener((newState, oldState) ->
+				stateChangeCalled().set(true));
 		}
 
 		@Bean
@@ -245,9 +244,8 @@ public class KafkaStreamsTests {
 
 		@Bean
 		public Map<String, Object> consumerConfigs() {
-			Map<String, Object> consumerProps = KafkaTestUtils.consumerProps(this.brokerAddresses, "testGroup",
+			return KafkaTestUtils.consumerProps(this.brokerAddresses, "testGroup",
 					"false");
-			return consumerProps;
 		}
 
 		@Bean

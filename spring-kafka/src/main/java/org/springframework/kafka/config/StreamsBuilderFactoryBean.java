@@ -106,7 +106,7 @@ public class StreamsBuilderFactoryBean extends AbstractFactoryBean<StreamsBuilde
 
 	private Duration closeTimeout = DEFAULT_CLOSE_TIMEOUT;
 
-	private boolean leaveGroupOnClose = false;
+	private boolean leaveGroupOnClose;
 
 	private KafkaStreams kafkaStreams;
 

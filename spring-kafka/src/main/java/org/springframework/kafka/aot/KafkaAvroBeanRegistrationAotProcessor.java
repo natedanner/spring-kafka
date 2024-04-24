@@ -78,9 +78,9 @@ public class KafkaAvroBeanRegistrationAotProcessor implements BeanRegistrationAo
 					checkType(keyType, avroTypes);
 					checkType(valueType, avroTypes);
 				}
-			}, method -> method.getName().equals("onMessage"));
+			}, method -> "onMessage".equals(method.getName()));
 		}
-		if (avroTypes.size() > 0) {
+		if (!avroTypes.isEmpty()) {
 			return (generationContext, beanRegistrationCode) -> {
 				ReflectionHints reflectionHints = generationContext.getRuntimeHints().reflection();
 				avroTypes.forEach(type -> reflectionHints.registerType(type,

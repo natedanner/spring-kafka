@@ -378,7 +378,7 @@ public class KafkaListenerAnnotationBeanPostProcessor<K, V>
 			Map<Method, Set<KafkaListener>> annotatedMethods = MethodIntrospector.selectMethods(targetClass,
 					(MethodIntrospector.MetadataLookup<Set<KafkaListener>>) method -> {
 						Set<KafkaListener> listenerMethods = findListenerAnnotations(method);
-						return (!listenerMethods.isEmpty() ? listenerMethods : null);
+						return listenerMethods.isEmpty() ? null : listenerMethods;
 					});
 			boolean hasClassLevelListeners = !classLevelListeners.isEmpty();
 			boolean hasMethodLevelListeners = !annotatedMethods.isEmpty();
@@ -886,7 +886,7 @@ public class KafkaListenerAnnotationBeanPostProcessor<K, V>
 		}
 		else {
 			for (PartitionOffset partitionOffset : partitionOffsets) {
-				Assert.isTrue(!partitionOffset.partition().equals("*"), () ->
+				Assert.isTrue(!"*".equals(partitionOffset.partition()), () ->
 						"Partition wildcard '*' is only allowed in a single @PartitionOffset in " + result);
 				resolvePartitionAsInteger((String) topic, resolveExpression(partitionOffset.partition()), result,
 						resolveInitialOffset(topic, partitionOffset), isRelative(topic, partitionOffset), true,
@@ -983,11 +983,10 @@ public class KafkaListenerAnnotationBeanPostProcessor<K, V>
 					.map(part -> createTopicPartitionOffset(topic, part, offset, isRelative, tpoSp))
 					.toList();
 			if (checkDups) {
-				collected.forEach(tpo -> {
+				collected.forEach(tpo ->
 					Assert.state(!result.contains(tpo), () ->
 							String.format("@TopicPartition can't have the same partition configuration twice: [%s]",
-									tpo));
-				});
+									tpo)));
 			}
 			result.addAll(collected);
 		}

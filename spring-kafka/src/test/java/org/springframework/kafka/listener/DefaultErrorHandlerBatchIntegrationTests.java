@@ -92,7 +92,7 @@ public class DefaultErrorHandlerBatchIntegrationTests {
 			data.addAll(records);
 			latch.countDown();
 			records.forEach(rec -> {
-				if (rec.value().equals("baz")) {
+				if ("baz".equals(rec.value())) {
 					throw new BatchListenerFailedException("fail", rec);
 				}
 			});
@@ -127,7 +127,7 @@ public class DefaultErrorHandlerBatchIntegrationTests {
 		assertThat(latch.await(60, TimeUnit.SECONDS)).isTrue();
 		assertThat(data).hasSize(13);
 		assertThat(data)
-				.extracting(rec -> rec.value())
+				.extracting(ConsumerRecord::value)
 				.containsExactly(
 					"foo", "bar", "baz", "qux", "fiz", "buz",
 					"baz", "qux", "fiz", "buz",
@@ -163,7 +163,7 @@ public class DefaultErrorHandlerBatchIntegrationTests {
 			data.addAll(records);
 			latch.countDown();
 			records.forEach(rec -> {
-				if (rec.value().equals("baz")) {
+				if ("baz".equals(rec.value())) {
 					throw new BatchListenerFailedException("fail", rec);
 				}
 			});
@@ -207,7 +207,7 @@ public class DefaultErrorHandlerBatchIntegrationTests {
 		assertThat(latch.await(60, TimeUnit.SECONDS)).isTrue();
 		assertThat(data).hasSize(17);
 		assertThat(data)
-				.extracting(rec -> rec.value())
+				.extracting(ConsumerRecord::value)
 				.containsExactly(
 					"foo", "bar", "baz", "qux", "fiz", "buz",
 					"baz", "qux", "fiz", "buz",

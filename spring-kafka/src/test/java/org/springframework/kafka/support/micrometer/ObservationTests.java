@@ -103,15 +103,15 @@ import io.micrometer.tracing.test.simple.SimpleTracer;
 @DirtiesContext
 public class ObservationTests {
 
-	public final static String OBSERVATION_TEST_1 = "observation.testT1";
+	public static final String OBSERVATION_TEST_1 = "observation.testT1";
 
-	public final static String OBSERVATION_TEST_2 = "observation.testT2";
+	public static final String OBSERVATION_TEST_2 = "observation.testT2";
 
-	public final static String OBSERVATION_TEST_3 = "observation.testT3";
+	public static final String OBSERVATION_TEST_3 = "observation.testT3";
 
-	public final static String OBSERVATION_RUNTIME_EXCEPTION = "observation.runtime-exception";
+	public static final String OBSERVATION_RUNTIME_EXCEPTION = "observation.runtime-exception";
 
-	public final static String OBSERVATION_ERROR = "observation.error";
+	public static final String OBSERVATION_ERROR = "observation.error";
 
 	@Test
 	void endToEnd(@Autowired Listener listener, @Autowired KafkaTemplate<Integer, String> template,
@@ -148,7 +148,7 @@ public class ObservationTests {
 		});
 
 		template.send(OBSERVATION_TEST_1, "test")
-				.thenAccept((sendResult) -> spanFromCallback.set(tracer.currentSpan()))
+				.thenAccept(sendResult -> spanFromCallback.set(tracer.currentSpan()))
 				.get(10, TimeUnit.SECONDS);
 
 		Deque<SimpleSpan> spans = tracer.getSpans();
@@ -448,7 +448,7 @@ public class ObservationTests {
 			factory.setConsumerFactory(cf);
 			factory.getContainerProperties().setObservationEnabled(true);
 			factory.setContainerCustomizer(container -> {
-				if (container.getListenerId().equals("obs3")) {
+				if ("obs3".equals(container.getListenerId())) {
 					container.setKafkaAdmin(this.mockAdmin);
 				}
 			});

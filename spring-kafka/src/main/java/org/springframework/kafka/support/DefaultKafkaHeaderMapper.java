@@ -319,7 +319,7 @@ public class DefaultKafkaHeaderMapper extends AbstractKafkaHeaderMapper {
 					headerName.equals(KafkaUtils.VALUE_DESERIALIZER_EXCEPTION_HEADER)) {
 				headers.put(headerName, header);
 			}
-			else if (!(headerName.equals(JSON_TYPES)) && matchesForInbound(headerName)) {
+			else if (!headerName.equals(JSON_TYPES) && matchesForInbound(headerName)) {
 				if (jsonTypes.containsKey(headerName)) {
 					String requestedType = jsonTypes.get(headerName);
 					populateJsonValueHeader(header, requestedType, headers);

@@ -74,15 +74,15 @@ import org.springframework.util.backoff.FixedBackOff;
 @EmbeddedKafka
 class RetryTopicClassLevelExceptionRoutingIntegrationTests {
 
-	final static String BLOCKING_AND_TOPIC_RETRY = "blocking-and-topic-retry";
+	static final String BLOCKING_AND_TOPIC_RETRY = "blocking-and-topic-retry";
 
-	final static String ONLY_RETRY_VIA_BLOCKING = "only-retry-blocking-topic";
+	static final String ONLY_RETRY_VIA_BLOCKING = "only-retry-blocking-topic";
 
-	final static String ONLY_RETRY_VIA_TOPIC = "only-retry-topic";
+	static final String ONLY_RETRY_VIA_TOPIC = "only-retry-topic";
 
-	final static String USER_FATAL_EXCEPTION_TOPIC = "user-fatal-topic";
+	static final String USER_FATAL_EXCEPTION_TOPIC = "user-fatal-topic";
 
-	final static String FRAMEWORK_FATAL_EXCEPTION_TOPIC = "framework-fatal-topic";
+	static final String FRAMEWORK_FATAL_EXCEPTION_TOPIC = "framework-fatal-topic";
 
 	@Autowired
 	private KafkaTemplate<String, String> kafkaTemplate;

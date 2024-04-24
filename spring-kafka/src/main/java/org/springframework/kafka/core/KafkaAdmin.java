@@ -239,7 +239,7 @@ public class KafkaAdmin extends KafkaResourceFactory
 	 */
 	public final boolean initialize() {
 		Collection<NewTopic> newTopics = newTopics();
-		if (newTopics.size() > 0) {
+		if (!newTopics.isEmpty()) {
 			AdminClient adminClient = null;
 			try {
 				adminClient = createAdmin();
@@ -299,9 +299,8 @@ public class KafkaAdmin extends KafkaResourceFactory
 				this.applicationContext.getBeansOfType(NewTopic.class, false, false));
 		Map<String, NewTopics> wrappers = this.applicationContext.getBeansOfType(NewTopics.class, false, false);
 		AtomicInteger count = new AtomicInteger();
-		wrappers.forEach((name, newTopics) -> {
-			newTopics.getNewTopics().forEach(nt -> newTopicsMap.put(name + "#" + count.getAndIncrement(), nt));
-		});
+		wrappers.forEach((name, newTopics) ->
+			newTopics.getNewTopics().forEach(nt -> newTopicsMap.put(name + "#" + count.getAndIncrement(), nt)));
 		Map<String, NewTopic> topicsForRetry = newTopicsMap.entrySet().stream()
 				.filter(entry -> entry.getValue() instanceof TopicForRetryable)
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
@@ -399,7 +398,7 @@ public class KafkaAdmin extends KafkaResourceFactory
 	}
 
 	private void addOrModifyTopicsIfNeeded(AdminClient adminClient, Collection<NewTopic> topics) {
-		if (topics.size() > 0) {
+		if (!topics.isEmpty()) {
 			Map<String, NewTopic> topicNameToTopic = new HashMap<>();
 			topics.forEach(t -> topicNameToTopic.compute(t.name(), (k, v) -> t));
 			DescribeTopicsResult topicInfo = adminClient
@@ -409,7 +408,7 @@ public class KafkaAdmin extends KafkaResourceFactory
 			List<NewTopic> topicsToAdd = new ArrayList<>();
 			Map<String, NewPartitions> topicsWithPartitionMismatches =
 					checkPartitions(topicNameToTopic, topicInfo, topicsToAdd);
-			if (topicsToAdd.size() > 0) {
+			if (!topicsToAdd.isEmpty()) {
 				addTopics(adminClient, topicsToAdd);
 			}
 			if (topicsWithPartitionMismatches.size() > 0) {
@@ -457,7 +456,7 @@ public class KafkaAdmin extends KafkaResourceFactory
 							configMismatchesEntries.add(actualConfigParameter);
 						}
 					}
-					if (configMismatchesEntries.size() > 0) {
+					if (!configMismatchesEntries.isEmpty()) {
 						configMismatches.put(topicConfig.getKey(), configMismatchesEntries);
 					}
 				}
@@ -491,7 +490,7 @@ public class KafkaAdmin extends KafkaResourceFactory
 												desiredConfigs.get(mismatchConfigEntry.name())),
 										OpType.SET));
 					}
-					if (alterConfigOperations.size() > 0) {
+					if (!alterConfigOperations.isEmpty()) {
 						try {
 							AlterConfigsResult alterConfigsResult = adminClient
 									.incrementalAlterConfigs(Map.of(topicConfigResource, alterConfigOperations));

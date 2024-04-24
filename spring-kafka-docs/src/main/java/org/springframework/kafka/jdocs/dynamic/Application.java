@@ -44,9 +44,8 @@ public class Application {
 
     @Bean
     ApplicationRunner runner(ConcurrentKafkaListenerContainerFactory<String, String> factory) {
-        return args -> {
+        return args ->
             createContainer(factory, "topic1", "group1");
-        };
     }
 
     @Bean

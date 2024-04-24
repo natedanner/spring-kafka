@@ -130,7 +130,7 @@ public class ContainerGroupSequencerTests {
 
 		@EventListener
 		public void stopped(ContainerStoppedEvent event) {
-			LOGGER.debug(() -> event.toString());
+			LOGGER.debug(event::toString);
 			this.stopped.countDown();
 		}
 

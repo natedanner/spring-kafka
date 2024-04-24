@@ -120,12 +120,10 @@ public final class JUnitUtils {
 	public static void revertLevels(String methodName, LevelsContainer container) {
 		LOGGER.info("++++++++++++++++++++++++++++ "
 				+ "Restoring log level setting for test " + methodName);
-		container.oldCatLevels.forEach((key, value) -> {
-			((Logger) LogManager.getLogger(key)).setLevel(value);
-		});
-		container.oldLevels.forEach((key, value) -> {
-			((Logger) LogManager.getLogger(key)).setLevel(value);
-		});
+		container.oldCatLevels.forEach((key, value) ->
+			((Logger) LogManager.getLogger(key)).setLevel(value));
+		container.oldLevels.forEach((key, value) ->
+			((Logger) LogManager.getLogger(key)).setLevel(value));
 	}
 
 	public static class LevelsContainer {

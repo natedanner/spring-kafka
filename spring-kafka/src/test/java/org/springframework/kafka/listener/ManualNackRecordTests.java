@@ -138,7 +138,7 @@ public class ManualNackRecordTests {
 		@KafkaListener(topics = "foo", groupId = "grp")
 		public void foo(String in, Acknowledgment ack) {
 			this.contents.add(in);
-			if (in.equals("qux")) {
+			if ("qux".equals(in)) {
 				this.replayTime = System.currentTimeMillis() - this.replayTime;
 			}
 			this.deliveryLatch.countDown();
@@ -216,9 +216,7 @@ public class ManualNackRecordTests {
 						return new ConsumerRecords(Collections.emptyMap());
 				}
 			}).given(consumer).poll(Duration.ofMillis(ContainerProperties.DEFAULT_POLL_TIMEOUT));
-			willAnswer(i -> {
-				return Collections.emptySet();
-			}).given(consumer).paused();
+			willAnswer(i -> Collections.emptySet()).given(consumer).paused();
 			willAnswer(i -> {
 				paused.set(true);
 				return null;

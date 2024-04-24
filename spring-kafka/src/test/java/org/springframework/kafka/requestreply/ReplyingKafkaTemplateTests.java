@@ -820,9 +820,7 @@ public class ReplyingKafkaTemplateTests {
 	void requestTimeoutWithMessage() throws Exception {
 		ProducerFactory pf = mock(ProducerFactory.class);
 		Producer producer = mock(Producer.class);
-		willAnswer(invocation -> {
-			return new CompletableFuture<>();
-		}).given(producer).send(any(), any());
+		willAnswer(invocation -> new CompletableFuture<>()).given(producer).send(any(), any());
 		given(pf.createProducer()).willReturn(producer);
 		GenericMessageListenerContainer container = mock(GenericMessageListenerContainer.class);
 		ContainerProperties properties = new ContainerProperties("two");
@@ -900,7 +898,7 @@ public class ReplyingKafkaTemplateTests {
 					new ConcurrentKafkaListenerContainerFactory<>();
 			factory.setConsumerFactory(cf());
 			factory.setReplyTemplate(template());
-			factory.setReplyHeadersConfigurer((k, v) -> k.equals("baz"));
+			factory.setReplyHeadersConfigurer((k, v) -> "baz".equals(k));
 			factory.setMissingTopicsFatal(false);
 			return factory;
 		}
@@ -944,14 +942,14 @@ public class ReplyingKafkaTemplateTests {
 		@KafkaListener(id = A_REQUEST, topics = A_REQUEST)
 		@SendTo  // default REPLY_TOPIC header
 		public String handleA(String in) throws InterruptedException {
-			if (in.equals("slow")) {
+			if ("slow".equals(in)) {
 				Thread.sleep(50);
 			}
-			if (in.equals("\"getAFoo\"")) {
-				return ("{\"bar\":\"baz\"}");
+			if ("\"getAFoo\"".equals(in)) {
+				return "{\"bar\":\"baz\"}";
 			}
-			if (in.equals("\"getFoos\"")) {
-				return ("[{\"bar\":\"baz\"},{\"bar\":\"qux\"}]");
+			if ("\"getFoos\"".equals(in)) {
+				return "[{\"bar\":\"baz\"},{\"bar\":\"qux\"}]";
 			}
 			return in.toUpperCase();
 		}

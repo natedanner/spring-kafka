@@ -79,15 +79,15 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 @TestPropertySource(properties = "two.attempts=2")
 class ExistingRetryTopicClassLevelIntegrationTests {
 
-	public final static String MAIN_TOPIC_WITH_NO_PARTITION_INFO = "main-topic-1";
+	public static final String MAIN_TOPIC_WITH_NO_PARTITION_INFO = "main-topic-1";
 
-	public final static String RETRY_TOPIC_WITH_NO_PARTITION_INFO = "main-topic-1-retry-1";
+	public static final String RETRY_TOPIC_WITH_NO_PARTITION_INFO = "main-topic-1-retry-1";
 
-	public final static String MAIN_TOPIC_WITH_PARTITION_INFO = "main-topic-2";
+	public static final String MAIN_TOPIC_WITH_PARTITION_INFO = "main-topic-2";
 
-	public final static String RETRY_TOPIC_WITH_PARTITION_INFO = "main-topic-2-retry-1";
+	public static final String RETRY_TOPIC_WITH_PARTITION_INFO = "main-topic-2-retry-1";
 
-	private final static String MAIN_TOPIC_CONTAINER_FACTORY = "kafkaListenerContainerFactory";
+	private static final String MAIN_TOPIC_CONTAINER_FACTORY = "kafkaListenerContainerFactory";
 
 	@Autowired
 	private KafkaTemplate<String, String> kafkaTemplate;

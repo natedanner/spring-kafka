@@ -76,17 +76,17 @@ import org.springframework.util.backoff.FixedBackOff;
 		RetryTopicSameContainerFactoryIntegrationTests.CLASS_LEVEL_THIRD_TOPIC}, partitions = 1)
 public class RetryTopicSameContainerFactoryIntegrationTests {
 
-	public final static String FIRST_TOPIC = "myRetryTopic1";
+	public static final String FIRST_TOPIC = "myRetryTopic1";
 
-	public final static String SECOND_TOPIC = "myRetryTopic2";
+	public static final String SECOND_TOPIC = "myRetryTopic2";
 
-	public final static String THIRD_TOPIC = "myRetryTopic3";
+	public static final String THIRD_TOPIC = "myRetryTopic3";
 
-	public final static String CLASS_LEVEL_FIRST_TOPIC = "classLevelRetryTopic1";
+	public static final String CLASS_LEVEL_FIRST_TOPIC = "classLevelRetryTopic1";
 
-	public final static String CLASS_LEVEL_SECOND_TOPIC = "classLevelRetryTopic2";
+	public static final String CLASS_LEVEL_SECOND_TOPIC = "classLevelRetryTopic2";
 
-	public final static String CLASS_LEVEL_THIRD_TOPIC = "classLevelRetryTopic3";
+	public static final String CLASS_LEVEL_THIRD_TOPIC = "classLevelRetryTopic3";
 
 	@Autowired
 	private KafkaTemplate<String, String> sendKafkaTemplate;
